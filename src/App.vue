@@ -1,16 +1,19 @@
 <template>
   <div id="app">
-    <BillingComponent msg="Welcome to Your Vue.js + TypeScript App" />
+    <BalanceComponent />
+    <BillingComponent v-if="false" />
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import BillingComponent from "./components/billing/BillingComponent.vue";
+import BalanceComponent from "./components/BalanceComponent.vue";
 
 @Component({
   components: {
     BillingComponent,
+    BalanceComponent,
   },
 })
 export default class App extends Vue {}
