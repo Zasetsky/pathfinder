@@ -174,6 +174,7 @@ export default class BillingComponent extends Vue {
         "https://ssd.rkrs.ru/api/v1/rkrs_sledopyt/billing/get",
         requestData
       );
+
       this.filteredResults = response.data.data;
       this.pagination = response.data.pagination;
       this.totalCost = response.data.total_cost;

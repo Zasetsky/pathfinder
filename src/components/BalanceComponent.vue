@@ -1,24 +1,29 @@
 <template>
-  <el-card shadow="never" v-loading="loading">
+  <el-card style="margin-top: 40px" shadow="never" v-loading="loading">
     <div class="balance-component">
-      <div class="balance-info">{{ balance }} ₽</div>
-
-      <div class="balance-component__select-wrapper">
-        <el-select
-          v-model="paymentMethod"
-          placeholder="+ Пополнить"
-          @change="handlePaymentMethodChange"
-        >
-          <el-option-group label="Способ оплаты">
-            <el-option label="Эквайринг" value="acquiring"></el-option>
-            <el-option
-              label="Расчётный счёт"
-              value="checking_account"
-            ></el-option>
-          </el-option-group>
-        </el-select>
-        <a class="link" href="#">Задать вопрос менеджеру <external_link /></a>
+      <div class="balance-component__link-wrapper">
+        <div class="balance-info">{{ balance }} ₽</div>
+        <a
+          class="link"
+          href="https://web.whatsapp.com/send?phone=79214377886"
+          target="_blank"
+          >Задать вопрос менеджеру <external_link_icon :color="'#909399'"
+        /></a>
       </div>
+
+      <el-select
+        v-model="paymentMethod"
+        placeholder="+ Пополнить"
+        @change="handlePaymentMethodChange"
+      >
+        <el-option-group label="Способ оплаты">
+          <el-option label="Эквайринг" value="acquiring"></el-option>
+          <el-option
+            label="Расчётный счёт"
+            value="checking_account"
+          ></el-option>
+        </el-option-group>
+      </el-select>
 
       <el-dialog
         width="350px"
@@ -44,9 +49,10 @@
           >
           <a
             class="dialog-footer__link"
-            href="#"
+            href="https://web.whatsapp.com/send?phone=79214377886"
+            target="_blank"
             @click="acquiringDialogVisible = false"
-            >Задать вопрос менеджеру <external_link
+            >Задать вопрос менеджеру <external_link_icon :color="'#909399'"
           /></a>
         </div>
       </el-dialog>
@@ -56,12 +62,12 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import external_link from "../assets/icons/external-link.vue";
+import { external_link_icon } from "../assets/icons/index";
 import axios from "axios";
 
 @Component({
   components: {
-    external_link,
+    external_link_icon,
   },
 })
 export default class BalanceComponent extends Vue {
@@ -141,6 +147,24 @@ export default class BalanceComponent extends Vue {
   justify-content: center;
   padding: 30px 20px;
 
+  &__link-wrapper {
+    position: relative;
+
+    .link {
+      position: absolute;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      font-family: "Roboto";
+      top: 28px;
+      white-space: nowrap;
+      font-size: 10px;
+      font-weight: 400;
+      color: #909399;
+      margin: 10px 0 20px 0;
+    }
+  }
+
   .balance-info {
     font-size: 20px;
     color: #17505b;
@@ -154,41 +178,25 @@ export default class BalanceComponent extends Vue {
     background: #fafafa;
   }
 
-  &__select-wrapper {
-    position: relative;
+  .el-select .el-input__inner {
+    background-color: #e8eeef;
+    border-color: #8ba8ad;
+    width: 145px;
+    border-radius: 0 4px 4px 0;
+  }
 
-    .el-select .el-input__inner {
-      background-color: #e8eeef;
-      border-color: #8ba8ad;
-      width: 145px;
-      border-radius: 0 4px 4px 0;
-    }
-
-    .el-select ::placeholder,
-    .el-select .el-input .el-select__caret {
-      color: #17505b;
-      font-weight: 500;
-      font-family: "Roboto";
-    }
-
-    .link {
-      position: absolute;
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      font-family: "Roboto";
-      top: 27px;
-      white-space: nowrap;
-      left: 5px;
-      font-size: 10px;
-      font-weight: 400;
-      color: #909399;
-      margin: 10px 0 20px 0;
-    }
+  .el-select ::placeholder,
+  .el-select .el-input .el-select__caret {
+    color: #17505b;
+    font-weight: 500;
+    font-family: "Roboto";
   }
 
   .el-dialog {
     &__header {
+      display: flex;
+      align-items: center;
+      padding: 14px 20px;
       background-color: #e8eeef;
       font-family: Roboto;
       font-size: 24px;

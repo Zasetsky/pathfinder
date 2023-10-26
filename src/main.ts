@@ -11,7 +11,7 @@ Vue.use(ElementUI, { locale });
 Vue.config.productionTip = false;
 
 const initialProps = {
-  accountId: 31355350,
+  accountId: 31355990,
   appName: "rkrs_sledopyt",
 };
 
@@ -25,6 +25,14 @@ axios.interceptors.request.use(
         amo_account_id: initialProps.accountId,
         app_name: initialProps.appName,
       };
+    }
+
+    // Добавляем ID в URL, если URL соответствует нужному пути
+    if (
+      config.url &&
+      config.url.includes("api/v1/rkrs_sledopyt/projects/upload")
+    ) {
+      config.url = `${config.url}/${initialProps.accountId}`;
     }
     return config;
   },
