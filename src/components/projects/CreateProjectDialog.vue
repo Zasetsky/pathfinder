@@ -15,6 +15,7 @@
             v-model="isInputFocused"
           >
             <el-input
+              size="small"
               v-model="name"
               placeholder="Название проекта"
               @focus="handleInputFocus"
@@ -23,6 +24,7 @@
           </el-tooltip>
 
           <el-cascader
+            size="small"
             style="margin: 10px 0"
             v-model="selectedPipelines"
             :options="pipelines"
@@ -39,6 +41,7 @@
             v-model="isSelectFocused"
           >
             <el-select
+              size="small"
               v-model="selectedResponsibles"
               multiple
               collapse-tags
@@ -72,7 +75,6 @@
             <el-button
               icon="el-icon-upload"
               style="width: 100%"
-              size="small"
               type="primary"
               plain
               >Загрузить базу</el-button
@@ -91,6 +93,7 @@
       <el-card shadow="never">
         <div class="dialog-window__additional">
           <el-select
+            size="small"
             v-model="selectedTag"
             multiple
             placeholder="Выберите тег для новой сделки"
@@ -161,7 +164,10 @@ export default class CreateProjectDialog extends Vue {
     if (event.raw) {
       this.fileList = [event.raw];
     } else {
-      console.log("Raw file не найден");
+      this.$message({
+        type: "error",
+        message: "Raw file не найден",
+      });
     }
   }
 
@@ -190,14 +196,9 @@ export default class CreateProjectDialog extends Vue {
   }
 
   public async handleSubmit() {
-    // Проверка, что fileList[0] действительно является файлом
-    if (!(this.fileList[0] instanceof File)) {
-      this.$message({
-        type: "error",
-        message: "Предоставленный объект не является файлом",
-      });
-      return;
-    }
+    // Подготовка файла в бинарном формате
+    const file = this.fileList[0];
+    const blob = new Blob([file], { type: file.type });
 
     // Создание объекта с данными
     const requestData = {
@@ -205,20 +206,24 @@ export default class CreateProjectDialog extends Vue {
       amo_pipeline_id: this.selectedPipelines[0],
       amo_status_id: this.selectedPipelines[1],
       amo_responsible: this.selectedResponsibles,
-      file_bd: this.fileList[0],
+      file_bd: blob,
       amo_tag_id: this.selectedTag,
       can_created_leads_duplicates: this.isSkipDuplicates ? "1" : "0",
     };
 
-    console.log(requestData);
-
     try {
       const response = await axios.post(
         "https://ssd.rkrs.ru/api/v1/rkrs_sledopyt/projects/created",
-        requestData
+        requestData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Accept: "application/json",
+          },
+        }
       );
 
-      if (response.data.status) {
+      if (response.data.result) {
         this.$message({
           type: "success",
           message: response.data.message,
@@ -239,7 +244,7 @@ export default class CreateProjectDialog extends Vue {
     } catch (error) {
       this.$message({
         type: "error",
-        message: "Произошла ошибка при создании проекта",
+        message: `Ошибка при создании проекта: ${error}`,
       });
     }
   }

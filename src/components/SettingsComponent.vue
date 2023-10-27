@@ -62,7 +62,10 @@ export default class MatchingFieldComponent extends Vue {
 
       this.isMatchingEnabled = response.data.data[0].enabled;
     } catch (error) {
-      console.error("Ошибка при получении настроек:", error);
+      this.$message({
+        type: "error",
+        message: `Ошибка при получении настроек: ${error}`,
+      });
     }
   }
 
@@ -93,10 +96,22 @@ export default class MatchingFieldComponent extends Vue {
         "https://ssd.rkrs.ru/api/v1/rkrs_sledopyt/settings_matching_field/setSettings",
         payload
       );
-
-      console.log("outside", response.data);
+      if (response.data.result) {
+        this.$message({
+          type: "success",
+          message: response.data.message,
+        });
+      } else {
+        this.$message({
+          type: "error",
+          message: response.data.message,
+        });
+      }
     } catch (error) {
-      console.error("Ошибка при сохранении настроек:", error);
+      this.$message({
+        type: "error",
+        message: `Произошла ошибка при сохранении настроек: ${error}`,
+      });
     }
   }
 }

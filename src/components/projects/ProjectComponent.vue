@@ -209,7 +209,6 @@ export default class ProjectComponent extends Vue {
       // Обработаем ответы
       if (activeProjectsResponse.data.result) {
         this.activeProjects = activeProjectsResponse.data.data;
-        // this.activeProjects[0].status = 1;
         if (this.activeTab === "active") {
           this.pagination = activeProjectsResponse.data.pagination;
         }

@@ -92,7 +92,7 @@ export default class BalanceComponent extends Vue {
       );
       this.balance = response.data.balance;
     } catch (error) {
-      console.error("Ошибка при получении баланса:", error);
+      console.debug("Ошибка при получении баланса:", error);
     }
   }
 
@@ -166,6 +166,8 @@ export default class BalanceComponent extends Vue {
   }
 
   .balance-info {
+    font-family: "Roboto";
+    font-weight: 500;
     font-size: 20px;
     color: #17505b;
     font-weight: 500;
