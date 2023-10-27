@@ -2,6 +2,7 @@
   <el-card style="margin-top: 40px" shadow="never" v-loading="loading">
     <div class="balance-component">
       <div class="balance-component__link-wrapper">
+        <h5>Ваш баланс</h5>
         <div class="balance-info">{{ balance }} ₽</div>
         <a
           class="link"
@@ -150,6 +151,16 @@ export default class BalanceComponent extends Vue {
   &__link-wrapper {
     position: relative;
 
+    h5 {
+      position: absolute;
+      margin: 0;
+      bottom: 47px;
+      color: #606266;
+      font-family: "Roboto";
+      font-size: 16px;
+      font-weight: 500;
+    }
+
     .link {
       position: absolute;
       text-decoration: none;
@@ -172,7 +183,7 @@ export default class BalanceComponent extends Vue {
     color: #17505b;
     font-weight: 500;
     width: 200px;
-    padding: 7.5px 20px;
+    padding: 7px 20px;
     border-radius: 4px 0px 0px 4px;
     border-top: 1px solid #dcdfe6;
     border-bottom: 1px solid #dcdfe6;

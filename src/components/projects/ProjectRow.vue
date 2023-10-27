@@ -142,13 +142,33 @@ export default class ProjectRow extends Vue {
           "https://ssd.rkrs.ru/api/v1/rkrs_sledopyt/projects/getReport",
           {
             id: projectId,
+          },
+          {
+            responseType: "blob", // указываем, что ожидаем Blob
           }
         );
 
         if (response.data.result) {
+          // Создание Blob и URL для него
+          const blob = new Blob([response.data.data], {
+            type: response.headers["content-type"],
+          });
+          const url = window.URL.createObjectURL(blob);
+
+          // Создание "невидимой" ссылки и программный клик по ней
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", "report.csv");
+          document.body.appendChild(link);
+          link.click();
+
+          // Удаление "невидимой" ссылки и освобождение ресурсов
+          document.body.removeChild(link);
+          window.URL.revokeObjectURL(url);
+
           this.$message({
             type: "success",
-            message: response.data.message,
+            message: "Файл успешно скачан",
           });
         } else {
           this.$message({
@@ -157,10 +177,9 @@ export default class ProjectRow extends Vue {
           });
         }
       } catch (error) {
-        // Обработка ошибок при скачивании.
         this.$message({
           type: "error",
-          message: `"Ошибка при скачивании отчета: " ${error}`,
+          message: `Ошибка при скачивании отчета: ${error}`,
         });
       }
     }
