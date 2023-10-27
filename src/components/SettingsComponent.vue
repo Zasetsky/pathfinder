@@ -91,27 +91,29 @@ export default class MatchingFieldComponent extends Vue {
       ],
     };
 
-    try {
-      const response = await axios.post(
-        "https://ssd.rkrs.ru/api/v1/rkrs_sledopyt/settings_matching_field/setSettings",
-        payload
-      );
-      if (response.data.result) {
-        this.$message({
-          type: "success",
-          message: response.data.message,
-        });
-      } else {
+    if (this.selectedField) {
+      try {
+        const response = await axios.post(
+          "https://ssd.rkrs.ru/api/v1/rkrs_sledopyt/settings_matching_field/setSettings",
+          payload
+        );
+        if (response.data.result) {
+          this.$message({
+            type: "success",
+            message: response.data.message,
+          });
+        } else {
+          this.$message({
+            type: "error",
+            message: response.data.message,
+          });
+        }
+      } catch (error) {
         this.$message({
           type: "error",
-          message: response.data.message,
+          message: `Произошла ошибка при сохранении настроек: ${error}`,
         });
       }
-    } catch (error) {
-      this.$message({
-        type: "error",
-        message: `Произошла ошибка при сохранении настроек: ${error}`,
-      });
     }
   }
 }

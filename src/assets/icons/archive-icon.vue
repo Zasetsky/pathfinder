@@ -1,5 +1,7 @@
 <template>
   <svg
+    @mouseenter="isHover = true"
+    @mouseleave="isHover = false"
     xmlns="http://www.w3.org/2000/svg"
     width="24"
     height="24"
@@ -8,7 +10,7 @@
   >
     <path
       d="M20 9C21.1046 9 22 8.10457 22 7V6C22 4.89543 21.1046 4 20 4H4C2.89543 4 2 4.89543 2 6V7C2 8.10457 2.89543 9 4 9M20 9H4M20 9V18C20 18.5304 19.7893 19.0391 19.4142 19.4142C19.0391 19.7893 18.5304 20 18 20H6C5.46957 20 4.96086 19.7893 4.58579 19.4142C4.21071 19.0391 4 18.5304 4 18V9M12 18V11M12 18L9 15M12 18L15 15"
-      :stroke="hover ? '#6FCF97' : '#909399'"
+      :stroke="isHover ? '#6FCF97' : '#909399'"
       stroke-linecap="round"
       stroke-linejoin="round"
     />
@@ -16,10 +18,10 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Prop } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 
 @Component
 export default class ArchiveIcon extends Vue {
-  @Prop({ default: false }) hover!: boolean;
+  public isHover = false;
 }
 </script>

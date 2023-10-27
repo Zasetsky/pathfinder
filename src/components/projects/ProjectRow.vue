@@ -62,8 +62,6 @@
         <template slot-scope="scope">
           <i
             :class="{ disabled: !scope.row.status && !scope.row.is_archive }"
-            @mouseenter="hoveredRows[scope.row.id] = true"
-            @mouseleave="hoveredRows[scope.row.id] = false"
             @click="
               downloadReport(
                 scope.row.id,
@@ -71,16 +69,12 @@
                 scope.row.status
               )
             "
-            ><download_icon
-              v-if="scope.row.status || scope.row.is_archive"
-              :hover="hoveredRows[scope.row.id]" />
+            ><download_icon v-if="scope.row.status || scope.row.is_archive" />
             <download_icon_disabled v-else
           /></i>
 
           <i
             :class="{ disabled: !scope.row.status && !scope.row.is_archive }"
-            @mouseenter="hoveredRows[scope.row.id] = true"
-            @mouseleave="hoveredRows[scope.row.id] = false"
             style="margin-left: 16px"
             @click="
               archiveProject(
@@ -89,9 +83,7 @@
                 scope.row.status
               )
             "
-            ><archive_icon
-              v-if="scope.row.status && !scope.row.is_archive"
-              :hover="hoveredRows[scope.row.id]" />
+            ><archive_icon v-if="scope.row.status && !scope.row.is_archive" />
             <unzip_icon v-else-if="scope.row.is_archive" />
             <archive_icon_disabled v-else
           /></i>
@@ -142,8 +134,6 @@ import {
 })
 export default class ProjectRow extends Vue {
   @Prop({ required: true }) public projects!: Project;
-
-  public hoveredRows: Record<number, boolean> = {};
 
   async downloadReport(projectId: number, is_archive: number, status: number) {
     if (status || is_archive) {
